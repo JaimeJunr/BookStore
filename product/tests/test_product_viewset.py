@@ -1,6 +1,9 @@
 import json
+
+from django.template.defaultfilters import title
 from django.urls import reverse
 from rest_framework import status
+from rest_framework.authtoken.models import Token
 from rest_framework.test import APITestCase, APIClient
 from order.factories import UserFactory
 from product.factories import CategoryFactory, ProductFactory
@@ -24,6 +27,8 @@ class TestProductViewSet(APITestCase):
         Cria um usuário autenticado, uma categoria padrão e um produto padrão para uso nos testes.
         """
         self.user = UserFactory()
+        token = Token.objects.create(user=self.user)
+        token.save()
         self.client.force_authenticate(user=self.user)
         self.default_category = CategoryFactory()
         self.product = ProductFactory(title="Pro Controller", price=200)
@@ -65,15 +70,17 @@ class TestProductViewSet(APITestCase):
         status da resposta é 200 OK. Também compara os dados retornados com o produto criado
         no `setUp`.
         """
+        token = Token.objects.get(user__username=self.user.username)
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + token.key)
         url = self.get_product_list_url()
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         product_data = json.loads(response.content)
 
-        self.assertEqual(product_data[0]['title'], self.product.title.title())
-        self.assertEqual(product_data[0]['price'], self.product.price)
-        self.assertEqual(product_data[0]['active'], self.product.active)
+        self.assertEqual(product_data['results'][0]['title'], self.product.title.title())
+        self.assertEqual(product_data['results'][0]['price'], self.product.price)
+        self.assertEqual(product_data['results'][0]['active'], self.product.active)
 
     def test_create_product(self):
         """
