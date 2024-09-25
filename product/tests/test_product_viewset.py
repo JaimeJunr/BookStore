@@ -40,7 +40,7 @@ class TestProductViewSet(APITestCase):
         Returns:
             str: URL da rota `product-list` com a versão da API.
         """
-        return reverse('product-list', kwargs={'version': 'v1'})
+        return reverse("product-list", kwargs={"version": "v1"})
 
     def create_product_payload(self, title="notebook", price=900.00, categories=None):
         """
@@ -57,9 +57,9 @@ class TestProductViewSet(APITestCase):
         if categories is None:
             categories = [self.default_category.id]
         return {
-            'title': title,
-            'price': price,
-            'categories_id': categories,
+            "title": title,
+            "price": price,
+            "categories_id": categories,
         }
 
     def test_get_all_products(self):
@@ -71,16 +71,18 @@ class TestProductViewSet(APITestCase):
         no `setUp`.
         """
         token = Token.objects.get(user__username=self.user.username)
-        self.client.credentials(HTTP_AUTHORIZATION='Token ' + token.key)
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + token.key)
         url = self.get_product_list_url()
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         product_data = json.loads(response.content)
 
-        self.assertEqual(product_data['results'][0]['title'], self.product.title.title())
-        self.assertEqual(product_data['results'][0]['price'], self.product.price)
-        self.assertEqual(product_data['results'][0]['active'], self.product.active)
+        self.assertEqual(
+            product_data["results"][0]["title"], self.product.title.title()
+        )
+        self.assertEqual(product_data["results"][0]["price"], self.product.price)
+        self.assertEqual(product_data["results"][0]["active"], self.product.active)
 
     def test_create_product(self):
         """
@@ -93,11 +95,13 @@ class TestProductViewSet(APITestCase):
         url = self.get_product_list_url()
         data = self.create_product_payload()
 
-        response = self.client.post(url, data=json.dumps(data), content_type='application/json')
+        response = self.client.post(
+            url, data=json.dumps(data), content_type="application/json"
+        )
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
-        created_product = Product.objects.get(title=data['title'])
+        created_product = Product.objects.get(title=data["title"])
 
-        self.assertEqual(created_product.title, data['title'])
-        self.assertEqual(created_product.price, data['price'])
+        self.assertEqual(created_product.title, data["title"])
+        self.assertEqual(created_product.price, data["price"])

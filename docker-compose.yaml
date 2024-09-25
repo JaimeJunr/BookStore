@@ -1,0 +1,39 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:13.0-alpine
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_USER: bookstore_dev
+      POSTGRES_PASSWORD: bookstore_dev
+      POSTGRES_DB: db
+
+  web:
+    build:
+      context: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - "/home/Jaime/Área de trabalho/Full-Stack/Python/BookStore:/app"
+    ports:
+      - '8000:8000'
+    environment:
+      DATABASE_URL: postgres://bookstore_dev:bookstore_dev@db:5432/db
+    depends_on:
+      - db
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - '8080:80'
+    volumes:
+      - './app/dist:/usr/share/nginx/html'
+      - './nginx.conf:/etc/nginx/conf.d/default.conf'  # Monta o arquivo de configuração
+    depends_on:
+      - web
+
+volumes:
+  postgres_data:

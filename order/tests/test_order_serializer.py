@@ -15,8 +15,5 @@ class TestOrderSerializer(TestCase):
 
     def test_order_serializer_valid(self):
         serializer_data = self.order_serializer.data
-        self.assertEquals(
-            serializer_data["product"][0]["title"], self.product1.title)
-        self.assertEquals(
-            serializer_data["product"][1]["title"], self.product2.title)
-
+        self.assertEquals(serializer_data["product"][0]["title"], self.product1.title)
+        self.assertEquals(serializer_data["product"][1]["title"], self.product2.title)

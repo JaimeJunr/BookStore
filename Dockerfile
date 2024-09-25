@@ -27,18 +27,17 @@ ENV PYTHONUNBUFFERED=1 \
 # Adiciona o Poetry e o ambiente virtual ao PATH
 ENV PATH="$POETRY_HOME/bin:$VENV_PATH/bin:$PATH"
 
-
 # Instala dependências do sistema
 RUN apt-get update && apt-get install --no-install-recommends -y \
     curl \
     build-essential \
     libpq-dev gcc \
-    && pip install psycopg2 \
-    && pip install poetry poetry init \
-    # Limpa o cache do apt-get para reduzir o tamanho da imagem
+    postgresql-client \
     && apt-get clean \
-    # Remove listas de pacotes para economizar espaço
-    && rm -rf /var/lib/apt/lists/**
+    && rm -rf /var/lib/apt/lists/*
+
+# Instala o Poetry
+RUN pip install poetry
 
 # Define o diretório de trabalho para a instalação de dependências
 WORKDIR $PYSETUP_PATH
