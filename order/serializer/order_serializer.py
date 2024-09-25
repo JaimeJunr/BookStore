@@ -22,7 +22,6 @@ class OrderSerializer(serializers.ModelSerializer):
         fields = ["product", "total", "user", "products_id"]
         extra_kwargs = {"product": {"required": False}}
 
-
     def create(self, validated_data):
         product_data = validated_data.pop("products_id")
         user_data = validated_data.pop("user")
