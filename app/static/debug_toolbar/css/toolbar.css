@@ -675,7 +675,7 @@
     font-weight: normal;
 }
 #djDebug .djdt-stack pre.djdt-locals {
-    margin: 0 27px 27px 27px;
+    margin: 0 27px 27px;
 }
 #djDebug .djdt-raw {
     background-color: #fff;
