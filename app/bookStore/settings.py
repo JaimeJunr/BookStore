@@ -17,24 +17,21 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 STATIC_URL = "/static/"
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")  # Ou um diretório que você preferir
+STATIC_ROOT = os.path.join(BASE_DIR, "static")  # Ou um diretório que você preferir
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-u3g67(xxn-s*l=-q809_(_h*=w7x(=2gcujck+l86sh!u3!)d-"
+SECRET_KEY = os.environ.get("SECRET_KEY", "django-insecure-u3g67(xxn-s*l=-q809_(_h*=w7x(=2gcujck+l86sh!u3!)d-")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DEBUG", "True")
 
-ALLOWED_HOSTS = [
-    "localhost",
-    "127.0.0.1",
-    "0.0.0.0",
-    "ebac-bookstore-api.herokuapp.com",
-    "drsantos20.pythonanywhere.com",
-]
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "localhost 127.0.0.1 0.0.0.0").split()
 
 
 # Application definition
@@ -50,7 +47,6 @@ INSTALLED_APPS = [
     "rest_framework",
     "order",
     "product",
-    "debug_toolbar",
     "rest_framework.authtoken",
 ]
 
@@ -62,10 +58,13 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = "bookStore.urls"
+
+if DEBUG:
+    INSTALLED_APPS += ['debug_toolbar']
+    MIDDLEWARE += ['debug_toolbar.middleware.DebugToolbarMiddleware']
 
 TEMPLATES = [
     {
@@ -89,17 +88,25 @@ WSGI_APPLICATION = "bookStore.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": os.environ.get("SQL_ENGINE", "django.db.backends.sqlite3"),
-        "NAME": os.environ.get("SQL_DATABASE", BASE_DIR / "db.sqlite3"),
-        "USER": os.environ.get("SQL_USER", "dev"),
-        "PASSWORD": os.environ.get("SQL_PASSWORD", "dev"),
-        "HOST": os.environ.get("SQL_HOST", "db"),
-        "PORT": os.environ.get("SQL_PORT", "5432"),
-    }
-}
 
+if os.getenv('DJANGO_ENV') == 'production':
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.getenv('SQL_DATABASE'),
+            'USER': os.getenv('SQL_USER'),
+            'PASSWORD': os.getenv('SQL_PASSWORD'),
+            'HOST': os.getenv('SQL_HOST'),
+            'PORT': os.getenv('SQL_PORT', '5432'),
+        }
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
