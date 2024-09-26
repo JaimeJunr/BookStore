@@ -81,8 +81,10 @@ class TestProductViewSet(APITestCase):
         self.assertEqual(
             product_data["results"][0]["title"], self.product.title.title()
         )
-        self.assertEqual(product_data["results"][0]["price"], self.product.price)
-        self.assertEqual(product_data["results"][0]["active"], self.product.active)
+        self.assertEqual(product_data["results"]
+                         [0]["price"], self.product.price)
+        self.assertEqual(product_data["results"]
+                         [0]["active"], self.product.active)
 
     def test_create_product(self):
         """

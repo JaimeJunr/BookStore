@@ -33,7 +33,8 @@ class TestCategoryViewSet(APITestCase):
         )
 
         url = reverse("category-list", kwargs={"version": "v1"})
-        response = self.client.post(url, data=data, content_type="application/json")
+        response = self.client.post(
+            url, data=data, content_type="application/json")
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         created_category = Category.objects.get(title="technology")

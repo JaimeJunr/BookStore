@@ -18,6 +18,21 @@ typing-extensions = {version = ">=4", markers = "python_version < \"3.11\""}
 tests = ["mypy (>=0.800)", "pytest", "pytest-asyncio"]
 
 [[package]]
+name = "autopep8"
+version = "2.3.1"
+description = "A tool that automatically formats Python code to conform to the PEP 8 style guide"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "autopep8-2.3.1-py2.py3-none-any.whl", hash = "sha256:a203fe0fcad7939987422140ab17a930f684763bf7335bdb6709991dd7ef6c2d"},
+    {file = "autopep8-2.3.1.tar.gz", hash = "sha256:8d6c87eba648fdcfc83e29b788910b8643171c395d9c4bcf115ece035b9c9dda"},
+]
+
+[package.dependencies]
+pycodestyle = ">=2.12.0"
+tomli = {version = "*", markers = "python_version < \"3.11\""}
+
+[[package]]
 name = "colorama"
 version = "0.4.6"
 description = "Cross-platform colored terminal text."
@@ -420,4 +435,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "08e2eeea524812e3d59b189deb7809843c19217e3cb85e181bd92a2eeea3929b"
+content-hash = "a85700e82d81540c269efe84c66c5275c82d1d5f5c79cd23f733b4bb8bae768c"
