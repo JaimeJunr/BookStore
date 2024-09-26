@@ -20,7 +20,8 @@ class ProductFactory(factory.django.DjangoModelFactory):
 
     title = factory.Faker("word")
     price = factory.Faker("random_int", min=100, max=1000)
-    category = factory.RelatedFactory(CategoryFactory, factory_related_name="product")
+    category = factory.RelatedFactory(
+        CategoryFactory, factory_related_name="product")
 
     class Meta:
         model = Product

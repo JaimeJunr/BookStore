@@ -17,21 +17,26 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 STATIC_URL = "/static/"
-STATIC_ROOT = os.path.join(BASE_DIR, "static")  # Ou um diretório que você preferir
+# Ou um diretório que você preferir
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("SECRET_KEY", "django-insecure-u3g67(xxn-s*l=-q809_(_h*=w7x(=2gcujck+l86sh!u3!)d-")
+SECRET_KEY = os.environ.get(
+    "SECRET_KEY", "django-insecure-u3g67(xxn-s*l=-q809_(_h*=w7x(=2gcujck+l86sh!u3!)d-"
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG", "True")
 
-ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "localhost 127.0.0.1 0.0.0.0").split()
+ALLOWED_HOSTS = os.environ.get(
+    "DJANGO_ALLOWED_HOSTS", "localhost 127.0.0.1 0.0.0.0"
+).split()
 
 
 # Application definition
@@ -63,8 +68,8 @@ MIDDLEWARE = [
 ROOT_URLCONF = "bookStore.urls"
 
 if DEBUG:
-    INSTALLED_APPS += ['debug_toolbar']
-    MIDDLEWARE += ['debug_toolbar.middleware.DebugToolbarMiddleware']
+    INSTALLED_APPS += ["debug_toolbar"]
+    MIDDLEWARE += ["debug_toolbar.middleware.DebugToolbarMiddleware"]
 
 TEMPLATES = [
     {
@@ -89,22 +94,22 @@ WSGI_APPLICATION = "bookStore.wsgi.application"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 
-if os.getenv('DJANGO_ENV') == 'production':
+if os.getenv("DJANGO_ENV") == "production":
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.getenv('SQL_DATABASE'),
-            'USER': os.getenv('SQL_USER'),
-            'PASSWORD': os.getenv('SQL_PASSWORD'),
-            'HOST': os.getenv('SQL_HOST'),
-            'PORT': os.getenv('SQL_PORT', '5432'),
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": os.getenv("SQL_DATABASE"),
+            "USER": os.getenv("SQL_USER"),
+            "PASSWORD": os.getenv("SQL_PASSWORD"),
+            "HOST": os.getenv("SQL_HOST"),
+            "PORT": os.getenv("SQL_PORT", "5432"),
         }
     }
 else:
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
         }
     }
 

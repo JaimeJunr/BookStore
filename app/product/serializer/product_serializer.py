@@ -33,6 +33,7 @@ class ProductSerializer(serializers.ModelSerializer):
         if category_data:
             product.category.set(category_data)
         else:
-            raise serializers.ValidationError("At least one category must be provided.")
+            raise serializers.ValidationError(
+                "At least one category must be provided.")
 
         return product
